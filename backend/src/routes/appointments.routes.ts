@@ -10,16 +10,19 @@ const createAppointmentService = new CreateAppointmentService();
 
 appointmentsRouter.get("/", async (request, response) => {
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);
-  return response.json(await appointmentsRepository.find());
+  const appointments = await appointmentsRepository.find({
+    relations: ["provider"],
+  });
+  return response.json(appointments);
 });
 
 appointmentsRouter.post("/", async (request, response) => {
-  const { provider, dateTime } = request.body;
+  const { providerId, dateTime } = request.body;
 
   const parsedDateTime = parseISO(dateTime);
   try {
     const appointment = await createAppointmentService.execute({
-      provider,
+      providerId,
       dateTime: parsedDateTime,
     });
     return response.json(appointment);
