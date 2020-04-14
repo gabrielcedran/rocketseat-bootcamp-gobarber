@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import User from "../models/User";
+import authConfig from "../config/auth";
 
 interface RequestDTO {
   email: string;
@@ -27,9 +28,9 @@ class AuthenticateUserService {
       throw Error("Could not authenticate. Please verify your data.");
     }
 
-    const token = sign({}, "secure-password", {
+    const token = sign({}, authConfig.jwt.secret, {
       subject: userFound.id,
-      expiresIn: "1d",
+      expiresIn: authConfig.jwt.expiresIn,
     });
 
     return { user: userFound, token };
