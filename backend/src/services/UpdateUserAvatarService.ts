@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import User from "../models/User";
 import uploadConfig from "../config/upload";
+import ApplicationError from "../errors/ApplicationError";
 
 interface RequestDTO {
   userId: string;
@@ -15,7 +16,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne(userId);
 
     if (!user) {
-      throw new Error("User not found!");
+      throw new ApplicationError("User not found!", 400);
     }
 
     if (user.avatar) {

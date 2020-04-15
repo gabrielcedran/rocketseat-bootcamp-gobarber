@@ -3,6 +3,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import User from "../models/User";
 import authConfig from "../config/auth";
+import ApplicationError from "../errors/ApplicationError";
 
 interface RequestDTO {
   email: string;
@@ -20,12 +21,18 @@ class AuthenticateUserService {
       where: { email },
     });
     if (!userFound) {
-      throw Error("Could not authenticate. Please verify your data.");
+      throw new ApplicationError(
+        "Could not authenticate. Please verify your data.",
+        401,
+      );
     }
 
     const passwordMatch = await compare(password, userFound.password);
     if (!passwordMatch) {
-      throw Error("Could not authenticate. Please verify your data.");
+      throw new ApplicationError(
+        "Could not authenticate. Please verify your data.",
+        401,
+      );
     }
 
     const token = sign({}, authConfig.jwt.secret, {
