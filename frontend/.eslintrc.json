@@ -36,7 +36,9 @@
       "import/prefer-default-export": "off",
       "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
       "@typescript-eslint/explicit-function-return-type": [ "error", { "allowExpressions": true } ],
-      "react/jsx-one-expression-per-line": ["off"]
+      "react/jsx-one-expression-per-line": ["off"],
+      "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off"
     },
     "settings": { "import/resolver": { "typescript": { } } }
 }
