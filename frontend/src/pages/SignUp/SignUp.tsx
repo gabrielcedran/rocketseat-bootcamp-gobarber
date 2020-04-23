@@ -26,6 +26,7 @@ const SignUp: React.FC = () => {
       });
       await schema.validate(data, { abortEarly: false });
     } catch (err) {
+      // set the errors in the form so that the elements can access them
       formRef.current?.setErrors(getValidationErrors(err));
     }
   }, []);

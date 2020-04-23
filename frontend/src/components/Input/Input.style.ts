@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+// Extra properties defined for this component to control style according to state
 interface ContainerProps {
   isFocused: boolean;
   isFilled: boolean;
@@ -20,6 +21,7 @@ export const Container = styled.div<ContainerProps>`
     margin-top: 8px;
   }
 
+  /** Way to access react properties when defining styles */
   ${props =>
     props.isFocused &&
     css`

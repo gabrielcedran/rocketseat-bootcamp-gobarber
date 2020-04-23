@@ -18,6 +18,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
+  // Hook to start the connection between the element and unform
   const { fieldName, defaultValue, error, registerField } = useField(name);
 
   // Everytime a component is rerendered, functions within that component are recreated as well.
@@ -32,6 +33,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
     setIsFocused(true);
   }, []);
 
+  // Wire the input with unform, so that it can be used to retrieve the values on submit and cope with error rendering
   useEffect(() => {
     registerField({
       name: fieldName,
