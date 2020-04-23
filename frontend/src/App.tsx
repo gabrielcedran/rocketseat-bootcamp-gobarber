@@ -2,7 +2,7 @@ import React from 'react';
 import GlobalStyles from './styles/global.styles';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider } from './hooks/AuthContext';
 
 const App: React.FC = () => {
   return (
