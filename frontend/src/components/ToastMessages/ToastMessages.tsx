@@ -1,20 +1,21 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FiAlertCircle, FiXCircle } from 'react-icons/fi';
 import { Container, ToastMessage } from './ToastMessages.styles';
-import { ToastProps } from '../../hooks/ToastContext';
+import { ToastProps, useToast } from '../../hooks/ToastContext';
 
 interface ToastMessagesContainer {
   messages: ToastProps[];
-  removeToast(id: string): void;
 }
 
-const ToastMessages: React.FC<ToastMessagesContainer> = ({
-  messages,
-  removeToast,
-}) => {
-  function handleToastRemoval(id: string): void {
-    removeToast(id);
-  }
+const ToastMessages: React.FC<ToastMessagesContainer> = ({ messages }) => {
+  const { removeToast } = useToast();
+
+  const handleToastRemoval = useCallback(
+    (id: string) => {
+      removeToast(id);
+    },
+    [removeToast],
+  );
 
   return (
     <Container>
