@@ -8,6 +8,7 @@ import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { useAuth } from '../../hooks/AuthContext';
+import { useToast } from '../../hooks/ToastContext';
 
 import logo from '../../assets/logo.svg';
 
@@ -19,8 +20,7 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { user, signIn } = useAuth();
-
-  console.log(user);
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -34,15 +34,23 @@ const SignIn: React.FC = () => {
         });
 
         await schema.validate(data, { abortEarly: false });
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
       } catch (err) {
-        formRef.current?.setErrors(getValidationErrors(err));
+        if (err instanceof Yup.ValidationError) {
+          formRef.current?.setErrors(getValidationErrors(err));
+        } else {
+          addToast({
+            title: 'Vizinho VTNC',
+            description: 'Você e um grande FDP',
+            type: 'error',
+          });
+        }
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (

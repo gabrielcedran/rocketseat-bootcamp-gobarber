@@ -2,14 +2,15 @@ import React from 'react';
 import GlobalStyles from './styles/global.styles';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
-import { AuthProvider } from './hooks/AuthContext';
+import ContextsLoader from './hooks/ContextsLoader';
 
 const App: React.FC = () => {
   return (
     <>
-      <AuthProvider>
+      <ContextsLoader>
         <SignIn />
-      </AuthProvider>
+      </ContextsLoader>
+
       <GlobalStyles />
     </>
   );
