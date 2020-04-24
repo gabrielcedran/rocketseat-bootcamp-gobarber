@@ -8,7 +8,10 @@ import {
 import { Container } from './ToastMessage.styles';
 import { ToastProps, useToast } from '../../../hooks/ToastContext';
 
-const ToastMessage: React.FC<{ toast: ToastProps }> = ({ toast }) => {
+const ToastMessage: React.FC<{ toast: ToastProps; style: object }> = ({
+  toast,
+  style,
+}) => {
   const { removeToast } = useToast();
 
   const icons = {
@@ -24,7 +27,11 @@ const ToastMessage: React.FC<{ toast: ToastProps }> = ({ toast }) => {
     return () => clearTimeout(timer);
   }, [toast.id, removeToast]);
   return (
-    <Container type={toast.type} hasDescription={!!toast.description}>
+    <Container
+      type={toast.type}
+      hasDescription={!!toast.description}
+      style={style}
+    >
       <FiAlertCircle size={20} />
       <div>
         <strong>{toast.title}</strong>
