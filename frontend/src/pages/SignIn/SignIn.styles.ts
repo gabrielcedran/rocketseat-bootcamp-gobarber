@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 import signInBackground from '../../assets/sign-in-background.png';
 
@@ -15,6 +15,34 @@ export const Content = styled.div`
   align-items: center;
   width: 100%;
   flex-basis: 700px;
+`;
+
+export const Background = styled.div`
+  /** flex: 1 means this container will grow or shrink accoridng to the space left */
+  flex: 1;
+  background: url(${signInBackground}) no-repeat center;
+  /**As the image has a limited size, if the screen is bigger, then the image does not fulfill all the space. This property is to
+  force the image strech */
+  background-size: cover;
+`;
+
+const appearFromLeft = keyframes`
+from {
+  opacity: 0;
+  transform: translateX(-80px);
+}
+to {
+  opacity: 1;
+  transform: translateX(0);
+}
+`;
+
+export const AnimationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: ${appearFromLeft} 1.5s;
 
   form {
     margin: 80px 0;
@@ -54,13 +82,4 @@ export const Content = styled.div`
       margin-right: 16px;
     }
   }
-`;
-
-export const Background = styled.div`
-  /** flex: 1 means this container will grow or shrink accoridng to the space left */
-  flex: 1;
-  background: url(${signInBackground}) no-repeat center;
-  /**As the image has a limited size, if the screen is bigger, then the image does not fulfill all the space. This property is to
-  force the image strech */
-  background-size: cover;
 `;
