@@ -43,8 +43,9 @@ const SignIn: React.FC = () => {
           formRef.current?.setErrors(getValidationErrors(err));
         } else {
           addToast({
-            title: 'Vizinho VTNC',
-            description: 'Você e um grande FDP',
+            title: 'Erro na autenticação',
+            description:
+              'Ocorreu um erro ao fazer login, cheque as credenciais.',
             type: 'error',
           });
         }
