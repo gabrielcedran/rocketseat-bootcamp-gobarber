@@ -26,6 +26,7 @@ const ToastMessage: React.FC<{ toast: ToastProps; style: object }> = ({
     // When a function is returned in a useEffect hook, that function is called when that component is disassembled (or destroyed).
     return () => clearTimeout(timer);
   }, [toast.id, removeToast]);
+
   return (
     <Container
       type={toast.type}

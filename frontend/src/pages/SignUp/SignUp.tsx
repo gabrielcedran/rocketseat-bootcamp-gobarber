@@ -3,7 +3,7 @@ import { FiArrowLeft, FiUser, FiLock, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   Container,
   Content,
@@ -14,28 +14,51 @@ import logo from '../../assets/logo.svg';
 import Button from '../../components/Button/Button';
 import Input from '../../components/Input/Input';
 import getValidationErrors from '../../utils/getValidationErrors';
+import goBarberApi from '../../services/goBarberApi';
+import { useToast } from '../../hooks/ToastContext';
 
 const SignUp: React.FC = () => {
+  const { addToast } = useToast();
+  const history = useHistory();
   // React's way of accessing dom/react elements directly
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async (data: object) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSubmit = useCallback(
+    async (data: object) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('Email obrigatório')
-          .email('Digite um e-mail válido'),
-        password: Yup.string().min(6, 'No mínimo dígitos.'),
-      });
-      await schema.validate(data, { abortEarly: false });
-    } catch (err) {
-      // set the errors in the form so that the elements can access them
-      formRef.current?.setErrors(getValidationErrors(err));
-    }
-  }, []);
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('Email obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().min(6, 'No mínimo dígitos.'),
+        });
+        await schema.validate(data, { abortEarly: false });
+
+        await goBarberApi.post('/users', data);
+        addToast({
+          title: 'Cadastro realizado',
+          description: 'Você já pode fazer o seu logon.',
+          type: 'success',
+        });
+
+        history.push('/');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          // set the errors in the form so that the elements can access them
+          formRef.current?.setErrors(getValidationErrors(err));
+        } else {
+          addToast({
+            title: 'Erro ao realizar cadastro',
+            description: 'Por favor tente novamente',
+          });
+        }
+      }
+    },
+    [addToast, history],
+  );
 
   return (
     <Container>
