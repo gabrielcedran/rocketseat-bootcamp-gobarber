@@ -4,13 +4,13 @@ import { uuid } from 'uuidv4';
 import ToastMessages from '../components/ToastMessages/ToastMessages';
 
 interface ToastContextData {
-  addToast(content: ToastProps): void;
+  addToast(content: Omit<ToastProps, 'id'>): void;
   removeToast(id: string): void;
   toasts: ToastProps[];
 }
 
-interface ToastProps {
-  id?: string;
+export interface ToastProps {
+  id: string;
   title: string;
   description: string;
   type?: 'success' | 'error' | 'info';
@@ -36,7 +36,7 @@ const ToastProvider: React.FC = ({ children }) => {
 
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
-      <ToastMessages />
+      <ToastMessages removeToast={removeToast} messages={toasts} />
       {children}
     </ToastContext.Provider>
   );
