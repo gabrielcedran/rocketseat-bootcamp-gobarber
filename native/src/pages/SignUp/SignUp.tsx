@@ -5,6 +5,7 @@ import {
   ScrollView,
   Platform,
   View,
+  Alert,
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,12 +18,12 @@ import {
   Title,
   ReturnLogin,
   ReturnLoginText,
-  Alert,
 } from './SignUp.styles';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import logo from '../../assets/logo.png';
 import getValidationErrors from '../../utils/getValidationErrors';
+import goBarberApi from '../../services/goBarberApi';
 
 interface SignUpFormData {
   name: string;
@@ -49,12 +50,18 @@ const SignUp: React.FC = () => {
       });
 
       await schema.validate(data, { abortEarly: false });
+      await goBarberApi.post('/users', data);
+
+      Alert.alert(
+        'Cadastro realizado com sucesso',
+        'Você já pode fazer login na aplicação.',
+      );
+      navigation.goBack();
     } catch (err) {
-      console.log(err);
       if (err instanceof Yup.ValidationError) {
         formRef.current?.setErrors(getValidationErrors(err));
       } else {
-        Alert(
+        Alert.alert(
           'Erro ao realizar cadastro',
           'Ocorreu um erro ao realizar o cadastro, por favor cheque os dados',
         );
