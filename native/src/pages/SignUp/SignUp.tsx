@@ -5,6 +5,7 @@ import {
   ScrollView,
   Platform,
   View,
+  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -24,6 +25,9 @@ import logo from '../../assets/logo.png';
 const SignUp: React.FC = () => {
   const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const emaildRef = useRef<TextInput>(null);
+
   const handleSubmit = useCallback((data: object) => {
     console.log('signup', data);
   }, []);
@@ -45,7 +49,15 @@ const SignUp: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
             <Form ref={formRef} onSubmit={handleSubmit}>
-              <Input name="name" icon="users" placeholder="Nome" />
+              <Input
+                name="name"
+                icon="users"
+                placeholder="Nome"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  emaildRef.current?.focus();
+                }}
+              />
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
@@ -53,11 +65,17 @@ const SignUp: React.FC = () => {
                 name="email"
                 icon="mail"
                 placeholder="E-mail"
+                returnKeyType="next"
+                onSubmitEditing={() => {
+                  passwordRef.current?.focus();
+                }}
+                ref={emaildRef}
               />
               <Input
                 secureTextEntry
                 name="password"
                 icon="lock"
+                ref={passwordRef}
                 placeholder="Senha"
                 returnKeyType="send"
                 onSubmitEditing={() => {
