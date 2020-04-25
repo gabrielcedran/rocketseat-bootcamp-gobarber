@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, KeyboardAvoidingView, View, Platform } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  View,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   Container,
@@ -21,31 +27,36 @@ const SignIn: React.FC = () => (
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       enabled
     >
-      <Container>
-        <Image source={logoImg} />
-        {/** Hack for IOS - when applying the keyboard avoiding view, the screen slides upwords, but this sliding animation is now applicable
-         * to Texts isolated
-         */}
-        <View>
-          <Title>Faça o seu login</Title>
-        </View>
-        <Input name="email" icon="mail" placeholder="E-mail" />
-        <Input name="password" icon="lock" placeholder="Senha" />
-        <Button
-          onPress={() => {
-            console.log('Teste');
-          }}
-        >
-          Entrar
-        </Button>
-        <ForgotPassword
-          onPress={() => {
-            console.log('forgot password!');
-          }}
-        >
-          <ForgotPasswordText>Esqueci a minha senha</ForgotPasswordText>
-        </ForgotPassword>
-      </Container>
+      <ScrollView
+        contentContainerStyle={{ flex: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Container>
+          <Image source={logoImg} />
+          {/** Hack for IOS - when applying the keyboard avoiding view, the screen slides upwords, but this sliding animation is now applicable
+           * to Texts isolated
+           */}
+          <View>
+            <Title>Faça o seu login</Title>
+          </View>
+          <Input name="email" icon="mail" placeholder="E-mail" />
+          <Input name="password" icon="lock" placeholder="Senha" />
+          <Button
+            onPress={() => {
+              console.log('Teste');
+            }}
+          >
+            Entrar
+          </Button>
+          <ForgotPassword
+            onPress={() => {
+              console.log('forgot password!');
+            }}
+          >
+            <ForgotPasswordText>Esqueci a minha senha</ForgotPasswordText>
+          </ForgotPassword>
+        </Container>
+      </ScrollView>
     </KeyboardAvoidingView>
     <CreateAccount
       onPress={() => {
