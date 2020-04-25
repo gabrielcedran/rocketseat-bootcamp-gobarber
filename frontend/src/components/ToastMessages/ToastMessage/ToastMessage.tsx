@@ -30,7 +30,7 @@ const ToastMessage: React.FC<{ toast: ToastProps; style: object }> = ({
   return (
     <Container
       type={toast.type}
-      hasDescription={!!toast.description}
+      hasdescription={toast.description ? 1 : 0}
       style={style}
     >
       <FiAlertCircle size={20} />
