@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, KeyboardAvoidingView, View, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {
   Container,
@@ -15,26 +15,38 @@ import logoImg from '../../assets/logo.png';
 
 const SignIn: React.FC = () => (
   <>
-    <Container>
-      <Image source={logoImg} />
-      <Title>Faça o seu login</Title>
-      <Input name="email" icon="mail" placeholder="E-mail" />
-      <Input name="password" icon="lock" placeholder="Senha" />
-      <Button
-        onPress={() => {
-          console.log('Teste');
-        }}
-      >
-        Entrar
-      </Button>
-      <ForgotPassword
-        onPress={() => {
-          console.log('forgot password!');
-        }}
-      >
-        <ForgotPasswordText>Esqueci a minha senha</ForgotPasswordText>
-      </ForgotPassword>
-    </Container>
+    {/** Android has this behavious by default */}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled
+    >
+      <Container>
+        <Image source={logoImg} />
+        {/** Hack for IOS - when applying the keyboard avoiding view, the screen slides upwords, but this sliding animation is now applicable
+         * to Texts isolated
+         */}
+        <View>
+          <Title>Faça o seu login</Title>
+        </View>
+        <Input name="email" icon="mail" placeholder="E-mail" />
+        <Input name="password" icon="lock" placeholder="Senha" />
+        <Button
+          onPress={() => {
+            console.log('Teste');
+          }}
+        >
+          Entrar
+        </Button>
+        <ForgotPassword
+          onPress={() => {
+            console.log('forgot password!');
+          }}
+        >
+          <ForgotPasswordText>Esqueci a minha senha</ForgotPasswordText>
+        </ForgotPassword>
+      </Container>
+    </KeyboardAvoidingView>
     <CreateAccount
       onPress={() => {
         console.log('create account!');
