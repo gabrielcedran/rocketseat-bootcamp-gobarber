@@ -4,7 +4,7 @@ import React, {
   useImperativeHandle,
   forwardRef,
 } from 'react';
-// the hook useImperativeHandle is used to provide information from the child component to the parent component
+// the hook useImperativeHandle is used to provide information from the child component to the parent component (or allow the parent execute a function of the child)
 import { TextInputProps } from 'react-native';
 import { useField } from '@unform/core';
 import { Container, TextInput, Icon } from './Input.styles';
@@ -17,8 +17,8 @@ interface InputProps extends TextInputProps {
 interface InputRef {
   focus(): void;
 }
-// By default, ref is a special element in react and is not present in the regular FC elements.
-// When it is needed to receive and pass refs around, the component type is RefForwardingComponent
+// By default, ref is a special element in react and is not present in the regular FC elements - it does not come with the regular props.
+// When it is needed to receive and pass refs around, the component needed is RefForwardingComponent and it received the ref and a extra param
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   { name, icon, ...rest },
   ref,
