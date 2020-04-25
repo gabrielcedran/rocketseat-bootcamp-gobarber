@@ -3,6 +3,8 @@ import React, {
   useRef,
   useImperativeHandle,
   forwardRef,
+  useCallback,
+  useState,
 } from 'react';
 // the hook useImperativeHandle is used to provide information from the child component to the parent component (or allow the parent execute a function of the child)
 import { TextInputProps } from 'react-native';
@@ -25,6 +27,17 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
 ) => {
   const { fieldName, error, defaultValue = '', registerField } = useField(name);
   const inputValueRef = useRef<any>({ value: defaultValue });
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  const handleInputFocus = useCallback(() => {
+    setIsFocused(true);
+  }, []);
+
+  const handleInputBlur = useCallback(() => {
+    setIsFocused(false);
+    setIsFilled(!!inputValueRef.current.value);
+  }, []);
 
   // As we already have a ref element, it is not possible to assign another (received as parameter)
   // Using this hook, we simple implement the function which will be called by the parent element and trigger
@@ -57,8 +70,12 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
   }, [fieldName, registerField]);
 
   return (
-    <Container>
-      <Icon name={icon} size={20} color="#666360" />
+    <Container isFocused={isFocused}>
+      <Icon
+        name={icon}
+        size={20}
+        color={isFocused || isFilled ? '#FF9000' : '#666360'}
+      />
       <TextInput
         {...rest}
         ref={inputValueRef}
@@ -69,6 +86,8 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
           inputValueRef.current.value = value;
         }}
         defaultValue={defaultValue}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
         placeholderTextColor="#666360"
         keyboardAppearance="dark"
       />
