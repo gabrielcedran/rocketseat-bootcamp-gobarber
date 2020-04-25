@@ -46,8 +46,20 @@ const SignUp: React.FC = () => {
             </View>
             <Form ref={formRef} onSubmit={handleSubmit}>
               <Input name="name" icon="users" placeholder="Nome" />
-              <Input name="email" icon="mail" placeholder="E-mail" />
-              <Input name="password" icon="lock" placeholder="Senha" />
+              <Input
+                autoCorrect={false}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                name="email"
+                icon="mail"
+                placeholder="E-mail"
+              />
+              <Input
+                secureTextEntry
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+              />
               <Button
                 onPress={() => {
                   formRef.current?.submitForm();
