@@ -37,37 +37,40 @@ const SignUp: React.FC = () => {
   const passwordRef = useRef<TextInput>(null);
   const emaildRef = useRef<TextInput>(null);
 
-  const handleSubmit = useCallback(async (data: SignUpFormData) => {
-    try {
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('E-mail inválido'),
-        password: Yup.string()
-          .required('Senha Obrigatória')
-          .min(6, 'Senha deve ter no mínimo 6 characteres'),
-      });
+  const handleSubmit = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('E-mail inválido'),
+          password: Yup.string()
+            .required('Senha Obrigatória')
+            .min(6, 'Senha deve ter no mínimo 6 characteres'),
+        });
 
-      await schema.validate(data, { abortEarly: false });
-      await goBarberApi.post('/users', data);
+        await schema.validate(data, { abortEarly: false });
+        await goBarberApi.post('/users', data);
 
-      Alert.alert(
-        'Cadastro realizado com sucesso',
-        'Você já pode fazer login na aplicação.',
-      );
-      navigation.goBack();
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        formRef.current?.setErrors(getValidationErrors(err));
-      } else {
         Alert.alert(
-          'Erro ao realizar cadastro',
-          'Ocorreu um erro ao realizar o cadastro, por favor cheque os dados',
+          'Cadastro realizado com sucesso',
+          'Você já pode fazer login na aplicação.',
         );
+        navigation.goBack();
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          formRef.current?.setErrors(getValidationErrors(err));
+        } else {
+          Alert.alert(
+            'Erro ao realizar cadastro',
+            'Ocorreu um erro ao realizar o cadastro, por favor cheque os dados',
+          );
+        }
       }
-    }
-  }, []);
+    },
+    [navigation],
+  );
 
   return (
     <>
