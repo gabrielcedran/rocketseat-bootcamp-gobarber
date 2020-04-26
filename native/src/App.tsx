@@ -5,13 +5,16 @@ import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import AuthenticationRoutes from './routes/routes';
+import ContextsLoader from './hooks/ContextsLoader';
 
 const App: React.FC = () => (
   <NavigationContainer>
     <StatusBar barStyle="light-content" backgroundColor="#312e38" />
-    <View style={{ flex: 1, backgroundColor: '#312e38' }}>
-      <AuthenticationRoutes />
-    </View>
+    <ContextsLoader>
+      <View style={{ flex: 1, backgroundColor: '#312e38' }}>
+        <AuthenticationRoutes />
+      </View>
+    </ContextsLoader>
   </NavigationContainer>
 );
 
