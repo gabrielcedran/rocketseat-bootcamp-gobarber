@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import ApplicationError from "../errors/ApplicationError";
+import ApplicationError from "@shared/errors/ApplicationError";
 
 export default function globalExceptionHandler(
   error: Error,

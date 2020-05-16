@@ -1,9 +1,9 @@
 import { Router } from "express";
 import "express-async-errors";
-import appointmentsRouter from "./appointments.routes";
-import usersRouter from "./users.routes";
-import sessionsRouter from "./sessions.routes";
-import enforceAuthentication from "../middlewares/enforceAuthentication";
+import appointmentsRouter from "@modules/appointments/infra/http/routes/appointments.routes";
+import usersRouter from "@modules/users/infra/http/routes/users.routes";
+import sessionsRouter from "@modules/users/infra/http/routes/sessions.routes";
+import enforceAuthentication from "@modules/users/infra/http/middlewares/enforceAuthentication";
 import globalExceptionHandler from "../middlewares/globalExceptionHandler";
 
 const routes = Router();
