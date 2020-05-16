@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import routes from "./routes";
 import uploadConfig from "@config/upload";
 import "@shared/infra/typeorm";
+import routes from "./routes";
 import "reflect-metadata";
 
 const app = express();
