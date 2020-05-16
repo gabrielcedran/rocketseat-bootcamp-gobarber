@@ -5,41 +5,16 @@ import CreateUserService from "@modules/users/services/CreateUserService";
 import UpdateUserAvatarService from "@modules/users/services/UpdateUserAvatarService";
 import enforceAuthentication from "@modules/users/infra/http/middlewares/enforceAuthentication";
 import uploadConfig from "@config/upload";
+import UsersController from "../controllers/UsersController";
+import UserAvatarController from "../controllers/UserAvatarController";
 
 const usersRouter = Router();
 
 const upload = multer(uploadConfig);
+const usersController = new UsersController();
+const userAvatarController = new UserAvatarController();
 
-usersRouter.post("/", async (request, response) => {
-
-
-  const { name, email, password } = request.body;
-
-  const createUserService = container.resolve(CreateUserService);
-  const createdUser = await createUserService.execute({
-    name,
-    email,
-    password,
-  });
-
-  delete createdUser.password;
-  return response.json(createdUser);
-});
-
-usersRouter.patch("/avatar", enforceAuthentication, upload.single("avatar"), async (request, response) => {
-  const updateUserAvatarService = container.resolve(UpdateUserAvatarService);
-
-  const {
-    user: { id: userId },
-    file: { filename: avatarFilename },
-  } = request;
-
-  const updatedUser = await updateUserAvatarService.execute({
-    userId,
-    avatarFilename,
-  });
-
-  return response.json(updatedUser);
-});
+usersRouter.post("/", usersController.create);
+usersRouter.patch("/avatar", enforceAuthentication, upload.single("avatar"), userAvatarController.update);
 
 export default usersRouter;
