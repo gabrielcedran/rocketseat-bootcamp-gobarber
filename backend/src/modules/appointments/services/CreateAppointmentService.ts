@@ -1,4 +1,5 @@
 import { startOfHour } from "date-fns";
+import { injectable, inject } from "tsyringe";
 import ApplicationError from "@shared/errors/ApplicationError";
 import Appointment from "../infra/typeorm/entities/Appointment";
 import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
@@ -8,10 +9,11 @@ interface IRequestDTO {
   dateTime: Date;
 }
 
+@injectable()
 class CreateAppointmentService {
   // This hack declares the attribute directly from the constructor
   // (instead of declaring outside and attributing the value within the constructor)
-  constructor(private appointmentsRepository: IAppointmentsRepository) {}
+  constructor(@inject("appointmentsRepository") private appointmentsRepository: IAppointmentsRepository) { }
 
   public async execute({ providerId, dateTime }: IRequestDTO): Promise<Appointment> {
     const appointmentDateTime = startOfHour(dateTime);

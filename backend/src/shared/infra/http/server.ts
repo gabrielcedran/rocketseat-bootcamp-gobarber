@@ -4,6 +4,7 @@ import uploadConfig from "@config/upload";
 import "@shared/infra/typeorm";
 import routes from "./routes";
 import "reflect-metadata";
+import "@shared/container";
 
 const app = express();
 

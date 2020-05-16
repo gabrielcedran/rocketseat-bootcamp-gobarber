@@ -1,17 +1,19 @@
 import path from "path";
 import fs from "fs";
+import { injectable, inject } from "tsyringe";
 import uploadConfig from "@config/upload";
 import ApplicationError from "@shared/errors/ApplicationError";
 import User from "../infra/typeorm/entities/User";
-import IUsersRepositories from "../repositories/IUsersRepository";
+import IUsersRepository from "../repositories/IUsersRepository";
 
 interface IRequestDTO {
   userId: string;
   avatarFilename: string;
 }
 
+@injectable()
 class UpdateUserAvatarService {
-  constructor(private usersRepository: IUsersRepositories) { }
+  constructor(@inject("usersRepository") private usersRepository: IUsersRepository) { }
 
   public async execute({ userId, avatarFilename }: IRequestDTO): Promise<User> {
     const user = await this.usersRepository.findById(userId);
