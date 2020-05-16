@@ -1,33 +1,29 @@
 import { startOfHour } from "date-fns";
-import { getCustomRepository } from "typeorm";
-import Appointment from "../infra/typeorm/entities/Appointment";
-import AppointmentsRepository from "../repositories/AppointmentsRepository";
 import ApplicationError from "@shared/errors/ApplicationError";
+import Appointment from "../infra/typeorm/entities/Appointment";
+import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 
-interface RequestDTO {
+interface IRequestDTO {
   providerId: string;
   dateTime: Date;
 }
 
 class CreateAppointmentService {
-  public async execute({
-    providerId,
-    dateTime,
-  }: RequestDTO): Promise<Appointment> {
-    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+  // This hack declares the attribute directly from the constructor
+  // (instead of declaring outside and attributing the value within the constructor)
+  constructor(private appointmentsRepository: IAppointmentsRepository) {}
 
+  public async execute({ providerId, dateTime }: IRequestDTO): Promise<Appointment> {
     const appointmentDateTime = startOfHour(dateTime);
 
-    if (await appointmentsRepository.findByDate(appointmentDateTime)) {
+    if (await this.appointmentsRepository.findByDate(appointmentDateTime)) {
       throw new ApplicationError("This timeslot is already booked.", 409);
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = this.appointmentsRepository.create({
       providerId,
       dateTime: appointmentDateTime,
     });
-
-    await appointmentsRepository.save(appointment);
 
     return appointment;
   }
