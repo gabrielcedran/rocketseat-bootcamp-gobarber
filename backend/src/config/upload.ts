@@ -2,11 +2,11 @@ import path from "path";
 import multer from "multer";
 import crypto from "crypto";
 
-const storageFolder = path.resolve(__dirname, "..", "..", "temp");
+const tempFolder = path.resolve(__dirname, "..", "..", "temp");
 
 export default {
   storage: multer.diskStorage({
-    destination: storageFolder,
+    destination: tempFolder,
     filename(request, file, callback) {
       const fileHash = crypto.randomBytes(10).toString("HEX");
       const fileName = `${fileHash}-${file.originalname}`;
@@ -14,5 +14,6 @@ export default {
     },
   }),
   limits: { fileSize: 1024 * 1024 },
-  destinationPath: storageFolder,
+  tempPath: tempFolder,
+  destinationPath: path.resolve(tempFolder, "uploads"),
 };
