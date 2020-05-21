@@ -15,7 +15,7 @@ class ResetPasswordService {
   constructor(
     @inject("usersRepository") private usersRepository: IUsersRepository,
     @inject("userTokensRepository") private userTokensRepository: IUserTokensRepository,
-    @inject("hasProvider") private hashProvider: IHashProvider,
+    @inject("hashProvider") private hashProvider: IHashProvider,
   ) { }
 
   public async execute({ token, password }: IRequest): Promise<void> {
