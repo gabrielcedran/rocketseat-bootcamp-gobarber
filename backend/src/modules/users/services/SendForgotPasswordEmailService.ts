@@ -24,7 +24,14 @@ class SendForgotPasswordEmailService {
 
     const { token } = await this.userTokensRepository.generate(user.id);
 
-    this.mailProvider.sendMail(email, `Pedido de recuperaçāo de senha recebido: ${token}`);
+    this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: "[GoBarber] Recuperaçāo de senha",
+      templateContent: { template: "Olá {{name}}: {{token}}", variables: { name: user.name, token } },
+    });
   }
 }
 
