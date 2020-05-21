@@ -2,7 +2,6 @@ import MailProviderMock from "@shared/container/providers/MailProvider/mock/Mail
 import ApplicationError from "@shared/errors/ApplicationError";
 import UsersRepositoryMock from "../repositories/mock/UsersRepositoryMock";
 import SendForgotPasswordEmailService from "./SendForgotPasswordEmailService";
-import User from "../infra/typeorm/entities/User";
 import UserTokensRepositoryMock from "../repositories/mock/UserTokensRepositoryMock";
 
 let mailProvider: MailProviderMock;
