@@ -12,9 +12,21 @@ describe("ListProviderDayAvailability", () => {
   it("should be able to list the availability of a provider in a given day", async () => {
     jest.spyOn(Date, "now").mockImplementationOnce(() => new Date(2019, 6, 4, 8, 30, 0).getTime());
 
-    await appointmentsRepository.create({ providerId: "id", dateTime: new Date(2019, 6, 4, 10, 0, 0) });
-    await appointmentsRepository.create({ providerId: "id", dateTime: new Date(2019, 6, 4, 12, 0, 0) });
-    await appointmentsRepository.create({ providerId: "id", dateTime: new Date(2019, 6, 4, 16, 0, 0) });
+    await appointmentsRepository.create({
+      providerId: "id",
+      userId: "userId",
+      dateTime: new Date(2019, 6, 4, 10, 0, 0),
+    });
+    await appointmentsRepository.create({
+      providerId: "id",
+      userId: "userId",
+      dateTime: new Date(2019, 6, 4, 12, 0, 0),
+    });
+    await appointmentsRepository.create({
+      providerId: "id",
+      userId: "userId",
+      dateTime: new Date(2019, 6, 4, 16, 0, 0),
+    });
 
     const availabilityPerHour = await listProviderDayAvailability.execute({
       providerId: "id",

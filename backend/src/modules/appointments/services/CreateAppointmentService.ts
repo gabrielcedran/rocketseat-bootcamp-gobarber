@@ -6,6 +6,7 @@ import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 
 interface IRequestDTO {
   providerId: string;
+  userId: string;
   dateTime: Date;
 }
 
@@ -15,7 +16,7 @@ class CreateAppointmentService {
   // (instead of declaring outside and attributing the value within the constructor)
   constructor(@inject("appointmentsRepository") private appointmentsRepository: IAppointmentsRepository) { }
 
-  public async execute({ providerId, dateTime }: IRequestDTO): Promise<Appointment> {
+  public async execute({ providerId, userId, dateTime }: IRequestDTO): Promise<Appointment> {
     const appointmentDateTime = startOfHour(dateTime);
 
     if (await this.appointmentsRepository.findByDate(appointmentDateTime)) {
@@ -24,6 +25,7 @@ class CreateAppointmentService {
 
     const appointment = this.appointmentsRepository.create({
       providerId,
+      userId,
       dateTime: appointmentDateTime,
     });
 
