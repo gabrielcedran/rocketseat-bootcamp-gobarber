@@ -35,8 +35,8 @@ describe("Update Avatar", () => {
   });
 
   it("should not be able to add avatar to invalid user", async () => {
-    await expect(updateUserAvatarService.execute({ userId: "123", avatarFilename: "donbob.png" })).rejects.toBeInstanceOf(
-      ApplicationError,
-    );
+    await expect(
+      updateUserAvatarService.execute({ userId: "123", avatarFilename: "donbob.png" }),
+    ).rejects.toBeInstanceOf(ApplicationError);
   });
 });

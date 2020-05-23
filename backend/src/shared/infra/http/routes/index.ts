@@ -9,6 +9,10 @@ import globalExceptionHandler from "../middlewares/globalExceptionHandler";
 
 const routes = Router();
 
+// enforceAuthentication is a middlewate (or interceptor in java), which is executed before the
+// functions handling the requests. Can be applied globably like the globalExceptionHandler
+// or before any endpoint with a given path or to an specific endpoint
+// more than one middleware can be applied example, middlewareA, middlewareB, controller
 routes.use("/appointments", enforceAuthentication, appointmentsRouter);
 routes.use("/users", usersRouter);
 routes.use("/sessions", sessionsRouter);

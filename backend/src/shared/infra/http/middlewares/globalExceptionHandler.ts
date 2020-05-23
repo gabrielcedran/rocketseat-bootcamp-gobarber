@@ -8,14 +8,10 @@ export default function globalExceptionHandler(
   _: NextFunction,
 ): Response<{ message: string; statusCode: number }> {
   if (error instanceof ApplicationError) {
-    return response
-      .status(error.statusCode)
-      .json({ message: error.message, statusCode: error.statusCode });
+    return response.status(error.statusCode).json({ message: error.message, statusCode: error.statusCode });
   }
 
   console.error(error);
 
-  return response
-    .status(500)
-    .json({ message: "Something unexpected went wrong.", statusCode: 500 });
+  return response.status(500).json({ message: "Something unexpected went wrong.", statusCode: 500 });
 }

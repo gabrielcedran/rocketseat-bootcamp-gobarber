@@ -24,8 +24,8 @@ describe("Create User", () => {
   it("should not be able to create a new user with existent email", async () => {
     await createUserService.execute({ name: "Mary", email: "don@bob.com", password: "123" });
 
-    await expect(createUserService.execute({ name: "Mary", email: "don@bob.com", password: "123" })).rejects.toBeInstanceOf(
-      ApplicationError,
-    );
+    await expect(
+      createUserService.execute({ name: "Mary", email: "don@bob.com", password: "123" }),
+    ).rejects.toBeInstanceOf(ApplicationError);
   });
 });
