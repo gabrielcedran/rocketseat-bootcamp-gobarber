@@ -1,5 +1,5 @@
 import { injectable, inject } from "tsyringe";
-import { getHours } from "date-fns";
+import { getHours, isAfter } from "date-fns";
 import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 
 interface IRequest {
@@ -23,11 +23,16 @@ class ListProviderDayAvailability {
 
     const startHour = 8;
     const hoursOfTheDay = Array.from({ length: 10 }, (value, index) => index + startHour);
+
+    // Date.now() helps to mock dates when testing
+    const currentDate = new Date(Date.now());
+
     const availability = hoursOfTheDay.map(hour => {
       const appointmentFound = appointments.find(appointment => getHours(appointment.dateTime) === hour);
+      const appointmentHour = new Date(year, month - 1, day, hour);
       return {
         hour,
-        available: !appointmentFound,
+        available: !appointmentFound && isAfter(appointmentHour, currentDate),
       };
     });
 
