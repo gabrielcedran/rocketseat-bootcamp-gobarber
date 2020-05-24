@@ -1,7 +1,7 @@
 import ApplicationError from "@shared/errors/ApplicationError";
+import NotificationsRepositoryMock from "@modules/notifications/repositories/mocks/NotificationsRepositoryMock";
 import AppointmentsRepositoryMock from "../repositories/mocks/AppointmentsRepositoryMock";
 import CreateAppointmentService from "./CreateAppointmentService";
-import NotificationsRepositoryMock from "@modules/notifications/repositories/mocks/NotificationsRepositoryMock";
 
 let appointmentsRepositoryMock: AppointmentsRepositoryMock;
 let notificationsRepositoryMock: NotificationsRepositoryMock;

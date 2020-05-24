@@ -26,7 +26,7 @@ class SendForgotPasswordEmailService {
     const { token } = await this.userTokensRepository.generate(user.id);
 
     const forgotPasswordTemplate = path.resolve(__dirname, "..", "templates", "forgot_password.hbs");
-
+    const baseUrl = process.env.APP_WEB_URL;
     this.mailProvider.sendMail({
       to: {
         name: user.name,
@@ -35,7 +35,7 @@ class SendForgotPasswordEmailService {
       subject: "[GoBarber] Recuperaçāo de senha",
       templateContent: {
         file: forgotPasswordTemplate,
-        variables: { name: user.name, link: `http://localhost:3000/reset_password?token=${token}` },
+        variables: { name: user.name, link: `${baseUrl}/reset_password?token=${token}` },
       },
     });
   }
