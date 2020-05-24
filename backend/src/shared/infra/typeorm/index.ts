@@ -1,6 +1,6 @@
-import { createConnection } from "typeorm";
+import { createConnections } from "typeorm";
 
-createConnection();
+createConnections();
 
 // to create new migrations, run "yarn typeorm migration:create -n {NAME}"
 // to apply new migrations, run "yarn typeorm migration:run"
