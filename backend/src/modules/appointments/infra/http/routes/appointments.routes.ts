@@ -1,5 +1,5 @@
 import { Router } from "express";
-import enforceAuthentication from "@modules/users/infra/http/middlewares/enforceAuthentication";
+import { celebrate, Segments, Joi } from "celebrate";
 import AppointmentsController from "@modules/appointments/infra/http/controllers/AppointmentsController";
 import ProviderAppointmentsController from "../controllers/ProviderAppointmentsController";
 
@@ -15,7 +15,17 @@ const providerAppointmentsController = new ProviderAppointmentsController();
 //   return response.json(appointments);
 // });
 
-appointmentsRouter.post("/", appointmentsController.create);
-appointmentsRouter.get("/me", enforceAuthentication, providerAppointmentsController.index);
+appointmentsRouter.post(
+  "/",
+  celebrate({
+    // same as "body": {...}
+    [Segments.BODY]: {
+      providerId: Joi.string().uuid().required(),
+      dateTime: Joi.date(),
+    },
+  }),
+  appointmentsController.create,
+);
+appointmentsRouter.get("/me", providerAppointmentsController.index);
 
 export default appointmentsRouter;

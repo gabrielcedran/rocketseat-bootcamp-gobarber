@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { errors } from "celebrate";
 import "express-async-errors";
 import appointmentsRouter from "@modules/appointments/infra/http/routes/appointments.routes";
 import providersRouter from "@modules/appointments/infra/http/routes/providers.routes";
@@ -20,7 +21,8 @@ routes.use("/providers", enforceAuthentication, providersRouter);
 routes.use("/users", usersRouter);
 routes.use("/sessions", sessionsRouter);
 routes.use("/password", passwordRouter);
-routes.use("/profile", profileRouter);
+routes.use("/profile", enforceAuthentication, profileRouter);
+routes.use(errors());
 // Global exception handlings must be added after all routes and the function must receive 4 parameters.
 routes.use(globalExceptionHandler);
 
