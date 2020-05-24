@@ -1,6 +1,7 @@
-import { startOfHour, isBefore, getHours } from "date-fns";
+import { startOfHour, isBefore, getHours, format } from "date-fns";
 import { injectable, inject } from "tsyringe";
 import ApplicationError from "@shared/errors/ApplicationError";
+import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
 import Appointment from "../infra/typeorm/entities/Appointment";
 import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 
@@ -14,7 +15,10 @@ interface IRequestDTO {
 class CreateAppointmentService {
   // This hack declares the attribute directly from the constructor
   // (instead of declaring outside and attributing the value within the constructor)
-  constructor(@inject("appointmentsRepository") private appointmentsRepository: IAppointmentsRepository) { }
+  constructor(
+    @inject("appointmentsRepository") private appointmentsRepository: IAppointmentsRepository,
+    @inject("notificationsRepository") private notificationsRepository: INotificationsRepository,
+  ) { }
 
   public async execute({ providerId, userId, dateTime }: IRequestDTO): Promise<Appointment> {
     const appointmentDateTime = startOfHour(dateTime);
@@ -39,6 +43,12 @@ class CreateAppointmentService {
       providerId,
       userId,
       dateTime: appointmentDateTime,
+    });
+
+    const formattedDate = format(appointmentDateTime, "dd/MM/yyyy 'às' HH:mm'h'");
+    await this.notificationsRepository.create({
+      recipientId: providerId,
+      content: `Novo agendamento para ${formattedDate}`,
     });
 
     return appointment;

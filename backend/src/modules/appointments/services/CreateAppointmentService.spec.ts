@@ -1,8 +1,10 @@
 import ApplicationError from "@shared/errors/ApplicationError";
 import AppointmentsRepositoryMock from "../repositories/mocks/AppointmentsRepositoryMock";
 import CreateAppointmentService from "./CreateAppointmentService";
+import NotificationsRepositoryMock from "@modules/notifications/repositories/mocks/NotificationsRepositoryMock";
 
 let appointmentsRepositoryMock: AppointmentsRepositoryMock;
+let notificationsRepositoryMock: NotificationsRepositoryMock;
 let createAppointmentService: CreateAppointmentService;
 
 
@@ -11,7 +13,8 @@ describe("CreateAppointment", () => {
 
   beforeEach(() => {
     appointmentsRepositoryMock = new AppointmentsRepositoryMock();
-    createAppointmentService = new CreateAppointmentService(appointmentsRepositoryMock);
+    notificationsRepositoryMock = new NotificationsRepositoryMock();
+    createAppointmentService = new CreateAppointmentService(appointmentsRepositoryMock, notificationsRepositoryMock);
   });
 
   // The same as test, but with a better semantic to readability, even in the tests report
