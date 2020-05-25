@@ -1,25 +1,32 @@
 import ApplicationError from "@shared/errors/ApplicationError";
 import NotificationsRepositoryMock from "@modules/notifications/repositories/mocks/NotificationsRepositoryMock";
+import CacheProviderMock from "@shared/container/providers/CacheProvider/mocks/CacheProviderMock";
 import AppointmentsRepositoryMock from "../repositories/mocks/AppointmentsRepositoryMock";
 import CreateAppointmentService from "./CreateAppointmentService";
 
 let appointmentsRepositoryMock: AppointmentsRepositoryMock;
 let notificationsRepositoryMock: NotificationsRepositoryMock;
+let cacheProviderMock: CacheProviderMock;
 let createAppointmentService: CreateAppointmentService;
-
 
 // The describe function is used to group tests, rather then leaving them scatered in the file
 describe("CreateAppointment", () => {
-
   beforeEach(() => {
     appointmentsRepositoryMock = new AppointmentsRepositoryMock();
     notificationsRepositoryMock = new NotificationsRepositoryMock();
-    createAppointmentService = new CreateAppointmentService(appointmentsRepositoryMock, notificationsRepositoryMock);
+    cacheProviderMock = new CacheProviderMock();
+    createAppointmentService = new CreateAppointmentService(
+      appointmentsRepositoryMock,
+      notificationsRepositoryMock,
+      cacheProviderMock,
+    );
   });
 
   // The same as test, but with a better semantic to readability, even in the tests report
   it("should be able to create a new appointment", async () => {
     jest.spyOn(Date, "now").mockImplementationOnce(() => new Date(2020, 6, 4, 9).getTime());
+    const invalidateCache = jest.spyOn(cacheProviderMock, "invalidate");
+
     const appointment = await createAppointmentService.execute({
       providerId: "1",
       userId: "2",
@@ -29,6 +36,7 @@ describe("CreateAppointment", () => {
     expect(appointment).toHaveProperty("id");
     expect(appointment.providerId).toBe("1");
     expect(appointment.userId).toBe("2");
+    expect(invalidateCache).toBeCalled();
   });
 
   it("should not be able to create two appointments at the same time", async () => {

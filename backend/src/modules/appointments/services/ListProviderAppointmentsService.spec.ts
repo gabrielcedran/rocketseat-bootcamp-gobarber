@@ -1,16 +1,20 @@
+import CacheProviderMock from "@shared/container/providers/CacheProvider/mocks/CacheProviderMock";
 import AppointmentsRepositoryMock from "../repositories/mocks/AppointmentsRepositoryMock";
 import ListProviderAppointmentsService from "./ListProviderAppointmentsService";
 
 let appointmentsRepository: AppointmentsRepositoryMock;
+let cacheProviderMock: CacheProviderMock;
 let listProviderAppointmentsService: ListProviderAppointmentsService;
 
 describe("ListProviderAppointmentsService", () => {
   beforeEach(() => {
     appointmentsRepository = new AppointmentsRepositoryMock();
-    listProviderAppointmentsService = new ListProviderAppointmentsService(appointmentsRepository);
+    cacheProviderMock = new CacheProviderMock();
+    listProviderAppointmentsService = new ListProviderAppointmentsService(appointmentsRepository, cacheProviderMock);
   });
 
   it("should be able to list the provider appointments for a given day", async () => {
+    const appointmentsCached = jest.spyOn(cacheProviderMock, "put");
     const appointment1 = await appointmentsRepository.create({
       providerId: "provider",
       userId: "userId",
@@ -35,5 +39,6 @@ describe("ListProviderAppointmentsService", () => {
     });
 
     expect(appointments).toEqual(expect.arrayContaining([appointment1, appointment2, appointment3]));
+    expect(appointmentsCached).toBeCalled();
   });
 });

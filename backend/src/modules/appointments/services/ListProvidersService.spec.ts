@@ -1,13 +1,16 @@
 import UsersRepositoryMock from "@modules/users/repositories/mock/UsersRepositoryMock";
+import CacheProviderMock from "@shared/container/providers/CacheProvider/mocks/CacheProviderMock";
 import ListProvidersService from "./ListProvidersService";
 
 let usersRepository: UsersRepositoryMock;
+let cacheProviderMock: CacheProviderMock;
 let listProvidersService: ListProvidersService;
 
 describe("ListProvidersService", () => {
   beforeEach(() => {
     usersRepository = new UsersRepositoryMock();
-    listProvidersService = new ListProvidersService(usersRepository);
+    cacheProviderMock = new CacheProviderMock();
+    listProvidersService = new ListProvidersService(usersRepository, cacheProviderMock);
   });
 
   it("should be able to list the providers", async () => {

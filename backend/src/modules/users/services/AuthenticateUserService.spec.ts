@@ -3,18 +3,21 @@ import UsersRepositoryMock from "../repositories/mock/UsersRepositoryMock";
 import HashProviderMock from "../providers/HashProvider/mock/HashProviderMock";
 import AuthenticateUserService from "./AuthenticateUserService";
 import CreateUserService from "./CreateUserService";
+import CacheProviderMock from "@shared/container/providers/CacheProvider/mocks/CacheProviderMock";
 
 let usersRepositoryMock: UsersRepositoryMock;
 let hashProvider: HashProviderMock;
 let authenticateUserService: AuthenticateUserService;
+let cacheProvider: CacheProviderMock;
 let createUserService: CreateUserService;
 
 describe("AuthenticateUser", () => {
   beforeEach(() => {
     usersRepositoryMock = new UsersRepositoryMock();
     hashProvider = new HashProviderMock();
+    cacheProvider = new CacheProviderMock();
     authenticateUserService = new AuthenticateUserService(usersRepositoryMock, hashProvider);
-    createUserService = new CreateUserService(usersRepositoryMock, hashProvider);
+    createUserService = new CreateUserService(usersRepositoryMock, hashProvider, cacheProvider);
   });
 
   it("should return a valid access token when credentials are correct", async () => {
