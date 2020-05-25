@@ -1,5 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Exclude, Expose } from "class-transformer";
+import uploadConfig from "@config/upload";
+import upload from "@config/upload";
 
 @Entity("users")
 class User {
@@ -29,7 +31,15 @@ class User {
   // Allows change/configure new fields to be returned in the HTTP response - needs to be used with classToClass
   @Expose({ name: "avatarUrl" })
   getAvatarUrl(): string | null {
-    return this.avatar ? `${process.env.APP_API_URL}/files/${this.avatar}` : null;
+    if (!this.avatar) {
+      return null;
+    }
+    switch (upload.driver) {
+      case "disk":
+        return `${process.env.APP_API_URL}/files/${this.avatar}`;
+      default:
+        return `https://${uploadConfig.s3.bucket}.s3.amazonaws.com/${this.avatar}`;
+    }
   }
 }
 

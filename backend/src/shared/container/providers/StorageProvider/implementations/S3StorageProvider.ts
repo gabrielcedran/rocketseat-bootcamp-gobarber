@@ -1,8 +1,10 @@
 import path from "path";
 import fs from "fs";
+import mime from "mime";
 import uploadConfig from "@config/upload";
 import aws, { S3 } from "aws-sdk";
 import IStorageProvider from "../models/IStorageProvider";
+import ApplicationError from "@shared/errors/ApplicationError";
 
 class S3StorageProvider implements IStorageProvider {
   private client: S3;
@@ -16,9 +18,13 @@ class S3StorageProvider implements IStorageProvider {
   public async saveFile(file: string): Promise<string> {
     const originalPath = path.resolve(uploadConfig.disk.tempPath, file);
 
-    const fileContent = await fs.promises.readFile(originalPath, {
-      encoding: "utf-8",
-    });
+    const fileContent = await fs.promises.readFile(originalPath);
+
+    const ContentType = mime.getType(originalPath);
+
+    if (!ContentType) {
+      throw new ApplicationError("File not found");
+    }
 
     await this.client
       .putObject({
@@ -26,6 +32,7 @@ class S3StorageProvider implements IStorageProvider {
         Key: file,
         ACL: "public-read",
         Body: fileContent,
+        ContentType,
       })
       .promise();
 
