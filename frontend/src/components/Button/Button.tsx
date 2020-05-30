@@ -1,12 +1,14 @@
 import React, { ButtonHTMLAttributes } from 'react';
 import { Container } from './Button.style';
 
-const Button: React.FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  ...rest
-}) => (
+// Exteding the properties of a external component so that react recognizes it as a valid property.
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  loading?: boolean;
+};
+
+const Button: React.FC<ButtonProps> = ({ children, loading, ...rest }) => (
   <Container type="button" {...rest}>
-    {children}
+    {loading ? 'Carregando...' : children}
   </Container>
 );
 

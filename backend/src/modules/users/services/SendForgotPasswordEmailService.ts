@@ -35,7 +35,7 @@ class SendForgotPasswordEmailService {
       subject: "[GoBarber] Recuperaçāo de senha",
       templateContent: {
         file: forgotPasswordTemplate,
-        variables: { name: user.name, link: `${baseUrl}/reset_password?token=${token}` },
+        variables: { name: user.name, link: `${baseUrl}/reset-password?token=${token}` },
       },
     });
   }
