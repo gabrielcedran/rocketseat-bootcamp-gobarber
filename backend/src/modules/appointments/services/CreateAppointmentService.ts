@@ -37,7 +37,7 @@ class CreateAppointmentService {
       throw new ApplicationError("User cannot be the provider at the same time");
     }
 
-    if (await this.appointmentsRepository.findByDate(appointmentDateTime)) {
+    if (await this.appointmentsRepository.findByDate(providerId, appointmentDateTime)) {
       throw new ApplicationError("This timeslot is already booked.", 409);
     }
 

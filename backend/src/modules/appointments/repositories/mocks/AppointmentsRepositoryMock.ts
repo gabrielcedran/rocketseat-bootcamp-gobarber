@@ -9,8 +9,10 @@ import IFindByProviderAndDay from "@modules/appointments/dtos/IFindByProviderAnd
 class AppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
 
-  public async findByDate(dateTime: Date): Promise<Appointment | undefined> {
-    const findAppointment = this.appointments.find(appointment => isEqual(appointment.dateTime, dateTime));
+  public async findByDate(providerId: string, dateTime: Date): Promise<Appointment | undefined> {
+    const findAppointment = this.appointments.find(
+      appointment => appointment.providerId === providerId && isEqual(appointment.dateTime, dateTime),
+    );
 
     return findAppointment;
   }
