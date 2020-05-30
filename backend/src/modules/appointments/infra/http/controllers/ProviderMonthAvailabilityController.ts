@@ -8,7 +8,11 @@ class ProviderMonthAvailability {
     const providerId = request.params.id;
     const { month, year } = request.query;
 
-    const availability = await listProviderMonthAvailability.execute({ providerId, month: Number(month), year: Number(year) });
+    const availability = await listProviderMonthAvailability.execute({
+      providerId,
+      month: Number(month),
+      year: Number(year),
+    });
 
     return response.json(availability);
   }
