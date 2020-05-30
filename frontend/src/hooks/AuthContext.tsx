@@ -7,14 +7,20 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user?: object;
+  user?: {
+    avatarUrl: string;
+    name: string;
+  };
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
 
 interface AuthState {
   token: string;
-  user: object;
+  user: {
+    avatarUrl: string;
+    name: string;
+  };
 }
 
 // In order to centrilize the login function, inside the context being created, provide the login method
