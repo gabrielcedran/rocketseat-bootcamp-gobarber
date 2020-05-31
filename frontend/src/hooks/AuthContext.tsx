@@ -7,22 +7,22 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user?: {
-    avatarUrl: string;
-    name: string;
-    id: string;
-  };
+  user?: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): void;
 }
 
 interface AuthState {
   token: string;
-  user: {
-    avatarUrl: string;
-    name: string;
-    id: string;
-  };
+  user: User;
+}
+
+interface User {
+  avatarUrl: string;
+  name: string;
+  id: string;
+  email: string;
 }
 
 // In order to centrilize the login function, inside the context being created, provide the login method
@@ -64,8 +64,23 @@ export const AuthProvider: React.FC = ({ children }) => {
     setAuthData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback(
+    (updatedData: User) => {
+      localStorage.setItem('@GoBarber:user', JSON.stringify(updatedData));
+      setAuthData({
+        token: authData.token,
+        user: {
+          ...updatedData,
+        },
+      });
+    },
+    [setAuthData, authData.token],
+  );
+
   return (
-    <AuthContext.Provider value={{ user: authData.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: authData.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

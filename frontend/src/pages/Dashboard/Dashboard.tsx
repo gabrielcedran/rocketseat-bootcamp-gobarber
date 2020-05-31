@@ -21,6 +21,7 @@ import {
 } from './Dashboard.styles';
 import logo from '../../assets/logo.svg';
 import { useAuth } from '../../hooks/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface MonthAvailabilityItem {
   day: number;
@@ -138,7 +139,9 @@ const Dashboard: React.FC = () => {
             <img src={user?.avatarUrl} alt={user?.name} />
             <div>
               <span>Bem vindo,</span>
-              <strong>{user?.name}</strong>
+              <Link to="/profile">
+                <strong>{user?.name}</strong>
+              </Link>
             </div>
           </Profile>
           <button type="button" onClick={signOut}>
@@ -172,7 +175,7 @@ const Dashboard: React.FC = () => {
           )}
           <Section>
             <strong>Manhā</strong>
-            {morningAppointments.length == 0 && (
+            {morningAppointments.length === 0 && (
               <p>Nenhum agendamento neste período.</p>
             )}
             {morningAppointments.map(appointment => (
