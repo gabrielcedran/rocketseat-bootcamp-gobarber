@@ -10,6 +10,7 @@ interface AuthContextData {
   user?: {
     avatarUrl: string;
     name: string;
+    id: string;
   };
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -20,6 +21,7 @@ interface AuthState {
   user: {
     avatarUrl: string;
     name: string;
+    id: string;
   };
 }
 
@@ -37,6 +39,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
     if (token && user) {
+      goBarberApi.defaults.headers.authorization = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
     return {} as AuthState;
@@ -48,6 +51,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     const { token, user } = response.data;
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    goBarberApi.defaults.headers.authorization = `Bearer ${token}`;
 
     setAuthData({ token, user });
   }, []);
